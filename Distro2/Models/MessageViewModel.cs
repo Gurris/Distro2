@@ -22,15 +22,14 @@ namespace Distro2.Models
         [Display(Name = "Message")]
         public string Message { get; set; }
 
-        public IEnumerable<SelectListItem> getUsers()
+        public List<SelectListItem> listItems = new List<SelectListItem>();
+
+
+        public void setUsers(List<ApplicationUser> input)
         {
-            ApplicationDbContext db = new ApplicationDbContext();
+            var users = input;
 
-            IEnumerable<ApplicationUser> users = new List<ApplicationUser>();
-            List<SelectListItem> listItems = new List<SelectListItem>();
-            users = db.Users.ToList();
-
-            foreach (ApplicationUser user in users) // move to another layer
+            foreach (ApplicationUser user in users)
             {
                 listItems.Add(new SelectListItem
                 {
@@ -38,10 +37,25 @@ namespace Distro2.Models
                     Value = user.Email
                 });
             }
-            
-            return listItems;
-        }
 
+        }
+    }
+
+    public class IndexMessageModel{
+
+        public int messageId { get; set; }
+
+        [Display(Name = "From")]
+        public string sender { get; set; }
+
+        [Display(Name = "Title")]
+        public string title { get; set; }
+
+        [Display(Name = "sent")]
+        public DateTime date { get; set; }
+
+        [Display(Name = "Read")]
+        public bool read { get; set; }
     }
     
 

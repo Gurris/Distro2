@@ -13,6 +13,7 @@ using System.Data.Entity.Validation;
 
 namespace Distro2.Controllers
 {
+    [Authorize]
     public class MessageModelsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -20,7 +21,23 @@ namespace Distro2.Controllers
         // GET: MessageModels
         public ActionResult Index()
         {
-            return View(db.Message.ToList());
+            //get only singnd in users messages
+            List<IndexMessageModel> messageList = new List<IndexMessageModel>();
+
+            var currentUser = db.Users.Find(User.Identity.GetUserId());
+            var messages = db.Message.ToList();
+
+            foreach (MessageModel message in messages)
+            {
+                IndexMessageModel tmp = new IndexMessageModel();
+                tmp.messageId = message.messageId;
+                tmp.sender = message.fromUser.Email;
+                tmp.title = message.title;
+                tmp.date = message.date;
+                tmp.read = message.read;
+                messageList.Add(tmp);
+            }
+            return View(messageList);
         }
 
         // GET: MessageModels/Details/5
@@ -39,10 +56,14 @@ namespace Distro2.Controllers
         }
 
         // GET: MessageModels/Create
-        public ActionResult Create()
+        public ActionResult Create() // make it so you cannot send messages to oneself!
         {
+            var model = new CreateMessageViewModel();
+            List<ApplicationUser> users = new List<ApplicationUser>();
+            users = db.Users.ToList();
+            model.setUsers(users);
 
-            return View(new CreateMessageViewModel());
+            return View(model);
         }
 
         // POST: MessageModels/Create
@@ -71,14 +92,13 @@ namespace Distro2.Controllers
                     }
                 }
                 
-                
+                // IF currentUser = sendToUser return false or somthign!
                 
                 message.read = false;
                 message.fromUser = currentUser;
                 message.date = DateTime.Now;
 
                 db.Message.Add(message);
-                //db.SaveChanges();
 
                 try
                 {

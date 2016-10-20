@@ -17,11 +17,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.selectedReciver, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-               
-                @*@Html.DropDownListFor(x => x.selectedReciver, new SelectList(Model.getUsers(), "Email", "Email"), "-- Select user--")*@
-                
-
-                @Html.DropDownListFor(x => x.selectedReciver, new SelectList(Model.getUsers(), "Text", "Value"),"-- Select an item --")
+                @Html.DropDownListFor(x => x.selectedReciver, new SelectList(Model.listItems, "Text", "Value"),"-- Select an item --")
                 @Html.ValidationMessageFor(model => model.selectedReciver, "", new { @class = "text-danger" })
             </div>
         </div>

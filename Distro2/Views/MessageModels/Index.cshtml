@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Distro2.Models.MessageModel>
+﻿@model IEnumerable<Distro2.Models.IndexMessageModel>
 
 @{
     ViewBag.Title = "Index";
@@ -12,10 +12,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.title)
+            @Html.DisplayNameFor(model => model.sender)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.message)
+            @Html.DisplayNameFor(model => model.title)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.date)
@@ -29,10 +29,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.title)
+            @Html.DisplayFor(modelItem => item.sender)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.message)
+            @Html.DisplayFor(modelItem => item.title)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.date)
