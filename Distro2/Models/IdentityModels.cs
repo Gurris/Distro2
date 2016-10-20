@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 
 namespace Distro2.Models
 {
@@ -16,6 +17,7 @@ namespace Distro2.Models
             // Add custom user claims here
             return userIdentity;
         }
+
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -29,5 +31,8 @@ namespace Distro2.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<MessageModel> Message { get; set; }
+
     }
 }
