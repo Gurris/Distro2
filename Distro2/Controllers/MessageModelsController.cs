@@ -170,10 +170,25 @@ namespace Distro2.Controllers
                     return View(messageViewModel);
                 }
                 db.Message.Add(message);
-
                 try
                 {
                     db.SaveChanges();
+                    ModelState.Clear();
+                    var model = new CreateMessageViewModel(); // will clear screen and display success message
+                    model.confMessage = "Message: " + message.messageId + " was sent to: " + message.toUser.Email;
+                    
+                    List<ApplicationUser> allUsers = new List<ApplicationUser>();
+                    allUsers = db.Users.ToList();
+                    List<ApplicationUser> modeifiedUsers = new List<ApplicationUser>();
+                    foreach (ApplicationUser u in allUsers)
+                    {
+                        if (!u.Id.Equals(User.Identity.GetUserId())) // only displays user that is not currentUser
+                        {
+                            modeifiedUsers.Add(u);
+                        }
+                    }
+                    model.setUsers(modeifiedUsers);
+                    return View(model);
                 }
                 catch (DbEntityValidationException ex)
                 {
@@ -185,9 +200,7 @@ namespace Distro2.Controllers
                         }
                     }
                 }
-
-
-                return RedirectToAction("Index");
+                
             }
 
             return View(messageViewModel);

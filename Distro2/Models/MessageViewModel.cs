@@ -22,6 +22,8 @@ namespace Distro2.Models
         [Display(Name = "Message")]
         public string Message { get; set; }
 
+        public string confMessage { get; set; }
+
         public List<SelectListItem> listItems = new List<SelectListItem>();
 
 
