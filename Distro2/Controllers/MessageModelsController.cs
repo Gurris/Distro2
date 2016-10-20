@@ -22,21 +22,77 @@ namespace Distro2.Controllers
         public ActionResult Index()
         {
             //get only singnd in users messages
-            List<IndexMessageModel> messageList = new List<IndexMessageModel>();
+            List<IndexMessageViewModel> messageList = new List<IndexMessageViewModel>();
 
             var currentUser = db.Users.Find(User.Identity.GetUserId());
             var messages = db.Message.ToList();
+            bool dup = false;
+            foreach (MessageModel message in messages)
+            {
+                if (message.toUser == currentUser)
+                {
+                    dup = false;
+                    for(int i=0; i<messageList.Count; i++)
+                    {
+                        if(message.fromUser.Email.Equals(messageList[i].sender)) // removes duplicate sender
+                        {
+                            dup = true;
+                            continue;
+                        }
+                    }
+                    if (dup)
+                        continue;
+                    IndexMessageViewModel tmp = new IndexMessageViewModel();
+                    tmp.messageId = message.messageId;
+                    tmp.sender = message.fromUser.Email;
+                    messageList.Add(tmp);
+                }
+                
+            }
+            return View(messageList);
+        }
+
+        public ActionResult ListMessage(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            //get only messages from sender and to this user
+            List<ListMessagesViewModel> messageList = new List<ListMessagesViewModel>();
+            ApplicationUser currentUser = db.Users.Find(User.Identity.GetUserId());
+            MessageModel recivedMessage = db.Message.Find(id);
+            ApplicationUser sender = recivedMessage.fromUser;
+            int rmvMessages = 0;
+            if (sender == null || currentUser == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            List<MessageModel> messages = db.Message.ToList();
 
             foreach (MessageModel message in messages)
             {
-                IndexMessageModel tmp = new IndexMessageModel();
-                tmp.messageId = message.messageId;
-                tmp.sender = message.fromUser.Email;
-                tmp.title = message.title;
-                tmp.date = message.date;
-                tmp.read = message.read;
-                messageList.Add(tmp);
+                if(message.removed == true)
+                {
+                    rmvMessages += 1;
+                    continue;
+                }
+                if (message.toUser == currentUser && message.fromUser == sender) // only adds messages with currentUser and sender is correct
+                {
+                    ListMessagesViewModel tmp = new ListMessagesViewModel();
+                    tmp.messageId = message.messageId;
+                    tmp.sender = message.fromUser.Email;
+                    tmp.title = message.title;
+                    tmp.date = message.date;
+                    tmp.read = message.read;
+                    messageList.Add(tmp);
+                }
             }
+            if(messageList.Count >= 1)
+            {
+                messageList[0].removedMsg = rmvMessages;
+            }
+
             return View(messageList);
         }
 
@@ -52,16 +108,39 @@ namespace Distro2.Controllers
             {
                 return HttpNotFound();
             }
-            return View(messageModel);
+            DetailsMessageViewModel detailMessage = new DetailsMessageViewModel();
+            detailMessage.messageId = messageModel.messageId;
+            detailMessage.title = messageModel.title;
+            detailMessage.sender = messageModel.fromUser.Email;
+            detailMessage.Message = messageModel.message;
+
+            messageModel.read = true;
+
+            if (ModelState.IsValid) // mark message as read
+            {
+                db.Entry(messageModel).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return View(detailMessage);
         }
 
         // GET: MessageModels/Create
-        public ActionResult Create() // make it so you cannot send messages to oneself!
+        public ActionResult Create()
         {
             var model = new CreateMessageViewModel();
-            List<ApplicationUser> users = new List<ApplicationUser>();
-            users = db.Users.ToList();
-            model.setUsers(users);
+            List<ApplicationUser> allUsers = new List<ApplicationUser>();
+            allUsers = db.Users.ToList();
+            List<ApplicationUser> modeifiedUsers = new List<ApplicationUser>();
+            foreach(ApplicationUser u in allUsers)
+            {
+                if (!u.Id.Equals(User.Identity.GetUserId())) // only displays user that is not currentUser
+                {
+                    modeifiedUsers.Add(u);
+                }
+            }
+
+            model.setUsers(modeifiedUsers);
 
             return View(model);
         }
@@ -76,28 +155,20 @@ namespace Distro2.Controllers
             if (ModelState.IsValid)
             {
                 var currentUser = db.Users.Find(User.Identity.GetUserId());
+                
                 MessageModel message = new MessageModel();
                 message.title = messageViewModel.Title;
                 message.message = messageViewModel.Message;
-
-
-                var tmp = db.Users.ToList(); // UGLYYYYYYYYYYY!Y!Y!YY!Y!Y!Y!Y!YY!Y!IUAWDHAWIUFgAUQLEYFGasEULYgs<euklfg FIX
-
-                foreach(ApplicationUser user in tmp)
-                {
-                    if (user.Email.Equals(messageViewModel.selectedReciver))
-                    {
-                        message.toUser = user;
-                        break;
-                    }
-                }
-                
-                // IF currentUser = sendToUser return false or somthign!
-                
                 message.read = false;
                 message.fromUser = currentUser;
                 message.date = DateTime.Now;
-
+                message.toUser = db.Users.ToList().Where(x => x.Email == messageViewModel.selectedReciver).First();
+                
+                
+                if(message.toUser == message.fromUser)
+                {
+                    return View(messageViewModel);
+                }
                 db.Message.Add(message);
 
                 try
@@ -121,26 +192,7 @@ namespace Distro2.Controllers
 
             return View(messageViewModel);
         }
-
         
-        public IEnumerable<SelectListItem> getUsers()
-        {
-            IEnumerable<ApplicationUser> users = new List<ApplicationUser>();
-            List<SelectListItem> listItems = new List<SelectListItem>();
-            users = db.Users.ToList();
-
-            foreach (ApplicationUser user in users) // move to another layer
-            {
-                listItems.Add(new SelectListItem
-                {
-                    Text = user.Email,
-                    Value = user.Email
-                });
-            }
-            
-            return listItems;
-        }
-
         // GET: MessageModels/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -193,8 +245,18 @@ namespace Distro2.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             MessageModel messageModel = db.Message.Find(id);
-            db.Message.Remove(messageModel);
-            db.SaveChanges();
+
+            if (ModelState.IsValid)
+            {
+                messageModel.removed = true;
+                db.Entry(messageModel).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+
+            //db.Message.Remove(messageModel);
+            //db.SaveChanges();
             return RedirectToAction("Index");
         }
 

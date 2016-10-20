@@ -1,27 +1,15 @@
-﻿@model IEnumerable<Distro2.Models.IndexMessageModel>
+﻿@model IEnumerable<Distro2.Models.IndexMessageViewModel>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Messages from users</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.sender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.read)
         </th>
         <th></th>
     </tr>
@@ -32,18 +20,7 @@
             @Html.DisplayFor(modelItem => item.sender)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.read)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.messageId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.messageId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.messageId })
+            @Html.ActionLink("see messages", "ListMessage", new { id=item.messageId })
         </td>
     </tr>
 }

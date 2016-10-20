@@ -25,6 +25,9 @@ namespace Distro2.Models
         [Display(Name = "Reciver")]
         public virtual ApplicationUser toUser { get; set; } // reciver
 
+        [Required]
+        public bool removed { get; set; }
+
     }
 
 }

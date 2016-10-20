@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Distro2.Models.ListMessagesViewModel>
+
+@{
+    ViewBag.Title = "List messages";
+}
+
+<h2>Messages from: @Html.DisplayFor(modelItem => modelItem.First().sender)</h2>
+<p>Nr of messages: @Model.Count()</p>
+<p>Nr of removed messages: @Model.First().removedMsg</p>
+<div>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.read)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.read)
+                </td>
+                <td>
+                    @Html.ActionLink("read message", "Details", new { id = item.messageId })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

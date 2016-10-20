@@ -41,8 +41,8 @@ namespace Distro2.Models
         }
     }
 
-    public class IndexMessageModel{
-
+    public class ListMessagesViewModel
+    {
         public int messageId { get; set; }
 
         [Display(Name = "From")]
@@ -56,7 +56,31 @@ namespace Distro2.Models
 
         [Display(Name = "Read")]
         public bool read { get; set; }
-    }
-    
 
+        [Display(Name = "Removed messages")]
+        public int removedMsg { get; set; }
+        [Display(Name = "Read messages")]
+        public int nrOfMessages { get; set; }
+    }
+
+    public class IndexMessageViewModel
+    {
+        public int messageId { get; set; }
+
+        [Display(Name = "From")]
+        public string sender { get; set; }
+
+    }
+
+    public class DetailsMessageViewModel
+    {
+        public int messageId { get; set; }
+
+        [Display(Name = "Title")]
+        public string title { get; set; }
+        [Display(Name = "Message")]
+        public string Message { get; set; }
+        [Display(Name = "Sender")]
+        public string sender { get; set; }
+    }
 }

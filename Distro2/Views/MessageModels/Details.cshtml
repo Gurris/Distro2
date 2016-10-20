@@ -1,13 +1,12 @@
-﻿@model Distro2.Models.MessageModel
+﻿@model Distro2.Models.DetailsMessageViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Read message";
 }
 
-<h2>Details</h2>
-
+<h2>Message</h2>
 <div>
-    <h4>MessageModel</h4>
+    <h4>Message from: @Html.DisplayFor(model => model.sender)</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -19,32 +18,16 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.message)
+            @Html.DisplayNameFor(model => model.Message)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.message)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.date)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.date)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.read)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.read)
+            @Html.DisplayFor(model => model.Message)
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.messageId }) |
+    @Html.ActionLink("Remove this message", "Delete", new { id = Model.messageId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
