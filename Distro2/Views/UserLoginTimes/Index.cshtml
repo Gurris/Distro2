@@ -1,0 +1,23 @@
+﻿@model Distro2.Models.IndexPageViewModel
+
+@{
+    ViewBag.Title = "StartPage";
+}
+
+<h2>Welcome @Html.DisplayFor(model => model.name)</h2>
+
+<dt>
+    @Html.DisplayNameFor(model => model.lastLogin)
+</dt>
+
+<dd>
+   @Html.DisplayFor(model => model.lastLogin)
+</dd>
+
+<dt>
+    @Html.DisplayNameFor(model => model.nrOfLoginsThisMonth)
+</dt>
+
+<dd>
+    @Html.DisplayFor(model => model.nrOfLoginsThisMonth)
+</dd>

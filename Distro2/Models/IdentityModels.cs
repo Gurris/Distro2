@@ -33,6 +33,7 @@ namespace Distro2.Models
         }
 
         public DbSet<MessageModel> Message { get; set; }
+        public DbSet<UserLoginTime> UserLoginTime { get; set; }
 
     }
 }

@@ -79,6 +79,7 @@ namespace Distro2.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    setLoginTimestamp(model.Email);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -88,6 +89,35 @@ namespace Distro2.Controllers
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
+            }
+        }
+
+        private void setLoginTimestamp(string email)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                UserLoginTime login = new UserLoginTime();
+                var tmp = db.Users.ToList();
+                foreach (ApplicationUser u in tmp)
+                {
+                    if (u.Email.Equals(email))
+                    {
+                        login.user = u;
+                        break;
+                    }
+                }
+
+                login.loginDate = DateTime.Now;
+                db.UserLoginTime.Add(login);
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e);
+                }
+
             }
         }
 
@@ -156,14 +186,14 @@ namespace Distro2.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    return RedirectToAction("Index", "Home");
+                    setLoginTimestamp(model.Email);
+                    return RedirectToAction("Index", "UserLoginTimes");
                 }
                 AddErrors(result);
             }
@@ -392,7 +422,7 @@ namespace Distro2.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //
@@ -449,7 +479,7 @@ namespace Distro2.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "UserLoginTimes");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

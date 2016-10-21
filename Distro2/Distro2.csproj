@@ -168,9 +168,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MessageModelsController.cs" />
+    <Compile Include="Controllers\UserLoginTimesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -182,12 +182,25 @@
     <Compile Include="Migrations\201610202105428_removedAttrubute.Designer.cs">
       <DependentUpon>201610202105428_removedAttrubute.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610211459564_UserLoginTime.cs" />
+    <Compile Include="Migrations\201610211459564_UserLoginTime.Designer.cs">
+      <DependentUpon>201610211459564_UserLoginTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610211531192_wut.cs" />
+    <Compile Include="Migrations\201610211531192_wut.Designer.cs">
+      <DependentUpon>201610211531192_wut.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610211645505_key.cs" />
+    <Compile Include="Migrations\201610211645505_key.Designer.cs">
+      <DependentUpon>201610211645505_key.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\MessageViewModel.cs" />
+    <Compile Include="Models\UserLoginTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -223,9 +236,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -252,6 +262,7 @@
     <Content Include="Views\MessageModels\Edit.cshtml" />
     <Content Include="Views\MessageModels\Index.cshtml" />
     <Content Include="Views\MessageModels\ListMessage.cshtml" />
+    <Content Include="Views\UserLoginTimes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -271,6 +282,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610202105428_removedAttrubute.resx">
       <DependentUpon>201610202105428_removedAttrubute.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610211459564_UserLoginTime.resx">
+      <DependentUpon>201610211459564_UserLoginTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610211531192_wut.resx">
+      <DependentUpon>201610211531192_wut.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610211645505_key.resx">
+      <DependentUpon>201610211645505_key.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
