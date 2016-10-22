@@ -174,25 +174,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201610191903479_allow_nulls.cs" />
-    <Compile Include="Migrations\201610191903479_allow_nulls.Designer.cs">
-      <DependentUpon>201610191903479_allow_nulls.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610202105428_removedAttrubute.cs" />
-    <Compile Include="Migrations\201610202105428_removedAttrubute.Designer.cs">
-      <DependentUpon>201610202105428_removedAttrubute.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610211459564_UserLoginTime.cs" />
-    <Compile Include="Migrations\201610211459564_UserLoginTime.Designer.cs">
-      <DependentUpon>201610211459564_UserLoginTime.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610211531192_wut.cs" />
-    <Compile Include="Migrations\201610211531192_wut.Designer.cs">
-      <DependentUpon>201610211531192_wut.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610211645505_key.cs" />
-    <Compile Include="Migrations\201610211645505_key.Designer.cs">
-      <DependentUpon>201610211645505_key.cs</DependentUpon>
+    <Compile Include="Migrations\201610221656055_initial.cs" />
+    <Compile Include="Migrations\201610221656055_initial.Designer.cs">
+      <DependentUpon>201610221656055_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -276,21 +260,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610191903479_allow_nulls.resx">
-      <DependentUpon>201610191903479_allow_nulls.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610202105428_removedAttrubute.resx">
-      <DependentUpon>201610202105428_removedAttrubute.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610211459564_UserLoginTime.resx">
-      <DependentUpon>201610211459564_UserLoginTime.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610211531192_wut.resx">
-      <DependentUpon>201610211531192_wut.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610211645505_key.resx">
-      <DependentUpon>201610211645505_key.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610221656055_initial.resx">
+      <DependentUpon>201610221656055_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -34,13 +34,13 @@ namespace Distro2.Controllers
                     dup = false;
                     for(int i=0; i<messageList.Count; i++)
                     {
-                        if(message.fromUser.Email.Equals(messageList[i].sender)) // removes duplicate sender
+                        if(message.fromUser.Email.Equals(messageList[i].sender)) // removes duplicate sender. And ignores removed messages
                         {
                             dup = true;
                             continue;
                         }
                     }
-                    if (dup)
+                    if (dup || message.removed)
                         continue;
                     IndexMessageViewModel tmp = new IndexMessageViewModel();
                     tmp.messageId = message.messageId;

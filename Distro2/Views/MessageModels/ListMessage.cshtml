@@ -3,42 +3,48 @@
 @{
     ViewBag.Title = "List messages";
 }
-
-<h2>Messages from: @Html.DisplayFor(modelItem => modelItem.First().sender)</h2>
-<p>Nr of messages: @Model.Count()</p>
-<p>Nr of removed messages: @Model.First().removedMsg</p>
-<div>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.read)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
+@if (Model.Any())
+{
+    <h2>Messages from: @Html.DisplayFor(modelItem => modelItem.First().sender)</h2>
+    <p>Nr of messages: @Model.Count()</p>
+    <p>Nr of removed messages: @Model.First().removedMsg</p>
+    <div>
+        <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.read)
-                </td>
-                <td>
-                    @Html.ActionLink("read message", "Details", new { id = item.messageId })
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.read)
+                </th>
+                <th></th>
             </tr>
-        }
 
-    </table>
-</div>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.read)
+                    </td>
+                    <td>
+                        @Html.ActionLink("read message", "Details", new { id = item.messageId })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+}else
+{
+    <h2>Error: could not find anny messags</h2>
+}
