@@ -22,5 +22,7 @@ namespace Distro2.Models
         public DateTime lastLogin { get; set; }
         [Display(Name = "Nr of logins this month")]
         public int nrOfLoginsThisMonth { get; set; }
+        [Display(Name = "Unread messages")]
+        public int nrOfUnreadMeassages { get; set; }
     }
 }

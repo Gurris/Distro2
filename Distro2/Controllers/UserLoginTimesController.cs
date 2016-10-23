@@ -23,10 +23,11 @@ namespace Distro2.Controllers
             ApplicationUser currnetUser = db.Users.Find(User.Identity.GetUserId());
             model.name = currnetUser.Email;
             // -------- Last time the user was logged in --------
-            List<UserLoginTime> logins = db.UserLoginTime.ToList(); // gets all logins
+            List<UserLoginTime> logins = db.UserLoginTime.ToList(); // get all logins
             List<UserLoginTime> thisUserLogin = new List<UserLoginTime>();
             var thisDate = DateTime.Now;
             model.nrOfLoginsThisMonth = 0;
+            model.nrOfUnreadMeassages = 0;
             foreach (UserLoginTime login in logins) // only get logins related to current user
             {
                 if (login.user.Id.Equals(currnetUser.Id))
@@ -44,7 +45,16 @@ namespace Distro2.Controllers
             }
             else
             {
-                model.lastLogin = thisUserLogin[(thisUserLogin.Count - 2)].loginDate; // heighest login is current login. So get one below it
+                model.lastLogin = thisUserLogin[(thisUserLogin.Count - 1)].loginDate; // heighest login is current login.
+            }
+            List<MessageModel> messages = db.Message.ToList(); // get all messages
+            List<MessageModel> thisUserMessages = new List<MessageModel>();
+            foreach(MessageModel message in messages)
+            {
+                if (message.toUser.Id.Equals(currnetUser.Id) && message.read == false)
+                {
+                    model.nrOfUnreadMeassages += 1;
+                }
             }
 
             return View(model);

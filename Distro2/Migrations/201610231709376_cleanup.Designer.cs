@@ -7,13 +7,13 @@ namespace Distro2.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class initial : IMigrationMetadata
+    public sealed partial class cleanup : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(initial));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(cleanup));
         
         string IMigrationMetadata.Id
         {
-            get { return "201610221656055_initial"; }
+            get { return "201610231709376_cleanup"; }
         }
         
         string IMigrationMetadata.Source
