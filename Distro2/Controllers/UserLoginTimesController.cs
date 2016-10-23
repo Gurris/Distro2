@@ -24,29 +24,22 @@ namespace Distro2.Controllers
             model.name = currnetUser.Email;
             // -------- Last time the user was logged in --------
             List<UserLoginTime> logins = db.UserLoginTime.ToList(); // get all logins
-            List<UserLoginTime> thisUserLogin = new List<UserLoginTime>();
+            List<UserLoginTime> thisUserLogin = db.UserLoginTime.Where(login => login.user.Id.Contains(currnetUser.Id)).ToList();
+
             var thisDate = DateTime.Now;
             model.nrOfLoginsThisMonth = 0;
             model.nrOfUnreadMeassages = 0;
-            foreach (UserLoginTime login in logins) // only get logins related to current user
+            
+            foreach(UserLoginTime login in thisUserLogin)
             {
-                if (login.user.Id.Equals(currnetUser.Id))
+                if(login.loginDate.Year == thisDate.Year && login.loginDate.Month == thisDate.Month)
                 {
-                    thisUserLogin.Add(login);
-                    if(login.loginDate.Year == thisDate.Year && login.loginDate.Month == thisDate.Month)
-                    {
-                        model.nrOfLoginsThisMonth += 1;
-                    }
+                    model.nrOfLoginsThisMonth += 1;
                 }
             }
-            if(thisUserLogin.Count == 1)
-            {
-                model.lastLogin = thisUserLogin[0].loginDate;
-            }
-            else
-            {
-                model.lastLogin = thisUserLogin[(thisUserLogin.Count - 1)].loginDate; // heighest login is current login.
-            }
+
+            model.lastLogin = thisUserLogin[(thisUserLogin.Count - 1)].loginDate; // heighest login is current login.
+            
             List<MessageModel> messages = db.Message.ToList(); // get all messages
             List<MessageModel> thisUserMessages = new List<MessageModel>();
             foreach(MessageModel message in messages)
